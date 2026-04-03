@@ -225,13 +225,13 @@ function AdminPanel({ gems, onAdd, onUpdate, onRemove, onClose }) {
 
   const handleSubmit = () => {
     if (!form.name || !form.price) { setMsg("Name and Price are required."); return; }
-    if (editingId) { onUpdate({ ...form, id: editingId }); setEditingId(null); setMsg("Listing updated ✓"); }
+    if (editingId) { onUpdate({ ...form, firestoreId: editingId }); setEditingId(null); setMsg("Listing updated ✓"); }
     else { onAdd({ ...form, id: Date.now() }); setMsg("Gem added ✓"); }
     setForm(emptyForm); setTab("manage");
   };
 
-  const startEdit = (g) => { setForm({ ...g }); setEditingId(g.id); setTab("add"); setMsg(""); };
-
+  const startEdit = (g) => { setForm({ ...g }); setEditingId(g.firestoreId); setTab("add"); setMsg(""); };    
+  
   const inp = { fontFamily: "sans-serif", fontSize: 14, border: "1px solid #cce0d4", borderRadius: 8, padding: "8px 12px", width: "100%", color: "#1a3a2a", outline: "none", boxSizing: "border-box", background: "#f8fdfb" };
 
   return (
@@ -348,7 +348,7 @@ function AdminPanel({ gems, onAdd, onUpdate, onRemove, onClose }) {
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
                     <button onClick={() => startEdit(g)} style={{ background: "none", border: "1px solid #06402b", borderRadius: 20, padding: "5px 14px", color: "#06402b", fontSize: 12, cursor: "pointer" }}>Edit</button>
-                    <button onClick={() => onRemove(g.id)} style={{ background: "none", border: "1px solid #e0a0a0", borderRadius: 20, padding: "5px 14px", color: "#c04040", fontSize: 12, cursor: "pointer" }}>Remove</button>
+                    <button onClick={() => onRemove(g.firestoreId)} style={{ background: "none", border: "1px solid #e0a0a0", borderRadius: 20, padding: "5px 14px", color: "#c04040", fontSize: 12, cursor: "pointer" }}>Remove</button>
                   </div>
                 </div>
               ))}
@@ -365,12 +365,17 @@ export default function DSGems() {
   const [gems, setGems] = useState([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "gems"), (snap) => {
+    const unsub = onSnapshot(collection(db, "gems"), async (snap) => {
       if (snap.empty) {
-        // First time — seed with initial data
-        INITIAL_GEMS.forEach(g => setDoc(doc(db, "gems", String(g.id)), g));
+        const seeded = [];
+        for (const g of INITIAL_GEMS) {
+          const docRef = await addDoc(collection(db, "gems"), { ...g, firestoreId: "" });
+          await updateDoc(docRef, { firestoreId: docRef.id });
+          seeded.push({ ...g, firestoreId: docRef.id });
+        }
+        setGems(seeded);
       } else {
-        setGems(snap.docs.map(d => ({ ...d.data(), id: d.id })));
+        setGems(snap.docs.map(d => ({ ...d.data(), firestoreId: d.id })));
       }
     });
     return () => unsub();
@@ -575,14 +580,14 @@ export default function DSGems() {
       {showAdmin && (
         <AdminPanel gems={gems}
           onAdd={async g => {
-            const docRef = await addDoc(collection(db, "gems"), g);
-            console.log("Added:", docRef.id);
+            const docRef = await addDoc(collection(db, "gems"), { ...g, firestoreId: "" });
+            await updateDoc(docRef, { firestoreId: docRef.id });
           }}
           onUpdate={async g => {
-            await updateDoc(doc(db, "gems", String(g.id)), g);
+            await updateDoc(doc(db, "gems", g.firestoreId), g);
           }}
-          onRemove={async id => {
-            await deleteDoc(doc(db, "gems", String(id)));
+          onRemove={async firestoreId => {
+            await deleteDoc(doc(db, "gems", firestoreId));
           }}
           onClose={() => setShowAdmin(false)} />
       )}
