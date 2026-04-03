@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ─── CLOUDINARY CONFIG ────────────────────────────────────────────────────────
 // Replace "your_cloud_name" with your actual Cloudinary cloud name
@@ -360,7 +360,17 @@ function AdminPanel({ gems, onAdd, onUpdate, onRemove, onClose }) {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function DSGems() {
-  const [gems, setGems] = useState(INITIAL_GEMS);
+  const [gems, setGems] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ds_gems");
+      return saved ? JSON.parse(saved) : INITIAL_GEMS;
+    } catch { return INITIAL_GEMS; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("ds_gems", JSON.stringify(gems));
+  }, [gems]);
+  
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
   const [selectedGem, setSelectedGem] = useState(null);
