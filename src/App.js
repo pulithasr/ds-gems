@@ -362,16 +362,19 @@ function AdminPanel({ gems, onAdd, onUpdate, onRemove, onClose }) {
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function DSGems() {
-  const [gems, setGems] = useState(() => {
-    try {
-      const saved = localStorage.getItem("ds_gems");
-      return saved ? JSON.parse(saved) : INITIAL_GEMS;
-    } catch { return INITIAL_GEMS; }
-  });
+  const [gems, setGems] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("ds_gems", JSON.stringify(gems));
-  }, [gems]);
+    const unsub = onSnapshot(collection(db, "gems"), (snap) => {
+      if (snap.empty) {
+        // First time — seed with initial data
+        INITIAL_GEMS.forEach(g => setDoc(doc(db, "gems", String(g.id)), g));
+      } else {
+        setGems(snap.docs.map(d => ({ ...d.data(), id: d.id })));
+      }
+    });
+    return () => unsub();
+  }, []);
 
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
@@ -571,9 +574,16 @@ export default function DSGems() {
 
       {showAdmin && (
         <AdminPanel gems={gems}
-          onAdd={g => setGems(prev => [g, ...prev])}
-          onUpdate={g => setGems(prev => prev.map(x => x.id===g.id ? g : x))}
-          onRemove={id => setGems(prev => prev.filter(g => g.id!==id))}
+          onAdd={async g => {
+            const docRef = await addDoc(collection(db, "gems"), g);
+            console.log("Added:", docRef.id);
+          }}
+          onUpdate={async g => {
+            await updateDoc(doc(db, "gems", String(g.id)), g);
+          }}
+          onRemove={async id => {
+            await deleteDoc(doc(db, "gems", String(id)));
+          }}
           onClose={() => setShowAdmin(false)} />
       )}
     </div>
