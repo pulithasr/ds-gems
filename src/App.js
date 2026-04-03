@@ -369,6 +369,8 @@ export default function DSGems() {
   const [adminPrompt, setAdminPrompt] = useState(false);
   const [keyError, setKeyError] = useState(false);
   const [page, setPage] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
+
 
   const filtered = gems.filter(g =>
     (category === "All" || g.category === category) &&
@@ -390,7 +392,7 @@ export default function DSGems() {
           .nav-links { gap: 12px !important; }
         }
       `}</style>
-      
+
       {/* Navbar */}
       <nav style={{ background: "#06402b", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 20px rgba(6,64,43,0.3)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -398,15 +400,34 @@ export default function DSGems() {
           <span style={{ color: "#a8f0c8", fontSize: 18, fontWeight: 700, letterSpacing: 2, whiteSpace: "nowrap" }}>DS GEMS</span>
         </div>
 
-        {/* Desktop nav */}
-        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <div className="nav-links" style={{ display: "flex", gap: 20 }}>
+        {/* Desktop nav - hidden on mobile */}
+        <div style={{ display: "flex", gap: 20, alignItems: "center", "@media(maxWidth:600px)": { display: "none" } }}>
+          <style>{`@media(max-width:640px){.ds-desktop-nav{display:none!important}}`}</style>
+          <div className="ds-desktop-nav" style={{ display: "flex", gap: 20, alignItems: "center" }}>
             {["home","about","contact"].map(p => (
               <button key={p} onClick={() => setPage(p)} style={{ background: "none", border: "none", color: page===p ? "#a8f0c8" : "rgba(168,240,200,0.55)", fontSize: 15, cursor: "pointer", textTransform: "capitalize", fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, letterSpacing: 1, borderBottom: page===p ? "1.5px solid #a8f0c8" : "none", paddingBottom: 2 }}>{p}</button>
             ))}
+            <button onClick={() => setAdminPrompt(true)} style={{ background: "rgba(168,240,200,0.12)", border: "1px solid rgba(168,240,200,0.3)", borderRadius: 20, padding: "6px 16px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer", letterSpacing: 1 }}>Admin</button>
           </div>
-          <button onClick={() => setAdminPrompt(true)} style={{ background: "rgba(168,240,200,0.12)", border: "1px solid rgba(168,240,200,0.3)", borderRadius: 20, padding: "6px 16px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer", letterSpacing: 1, whiteSpace: "nowrap" }}>Admin</button>
         </div>
+
+        {/* Hamburger button - mobile only */}
+        <style>{`@media(min-width:641px){.ds-hamburger{display:none!important}}.ds-mobile-menu{display:none}.ds-mobile-menu.open{display:flex!important}`}</style>
+        <button className="ds-hamburger" onClick={() => setMenuOpen(o => !o)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", gap: 5, padding: 8 }}>
+          <span style={{ display: "block", width: 24, height: 2, background: "#a8f0c8", borderRadius: 2, transition: "0.2s", transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }}></span>
+          <span style={{ display: "block", width: 24, height: 2, background: "#a8f0c8", borderRadius: 2, transition: "0.2s", opacity: menuOpen ? 0 : 1 }}></span>
+          <span style={{ display: "block", width: 24, height: 2, background: "#a8f0c8", borderRadius: 2, transition: "0.2s", transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }}></span>
+        </button>
+
+        {/* Mobile dropdown menu */}
+        {menuOpen && (
+          <div style={{ position: "absolute", top: 64, left: 0, right: 0, background: "#06402b", display: "flex", flexDirection: "column", padding: "12px 20px 20px", gap: 4, boxShadow: "0 8px 20px rgba(0,0,0,0.3)", zIndex: 99 }}>
+            {["home","about","contact"].map(p => (
+              <button key={p} onClick={() => { setPage(p); setMenuOpen(false); }} style={{ background: "none", border: "none", color: page===p ? "#a8f0c8" : "rgba(168,240,200,0.7)", fontSize: 18, cursor: "pointer", textTransform: "capitalize", fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, letterSpacing: 1, padding: "10px 0", textAlign: "left", borderBottom: "1px solid rgba(168,240,200,0.1)" }}>{p}</button>
+            ))}
+            <button onClick={() => { setAdminPrompt(true); setMenuOpen(false); }} style={{ background: "rgba(168,240,200,0.12)", border: "1px solid rgba(168,240,200,0.3)", borderRadius: 20, padding: "10px 16px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 14, cursor: "pointer", letterSpacing: 1, marginTop: 8 }}>Admin</button>
+          </div>
+        )}
       </nav>
 
       {page === "home" && (
