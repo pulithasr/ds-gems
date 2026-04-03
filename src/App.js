@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { db } from "./firebase";
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, setDoc } from "firebase/firestore";
 
 // ─── CLOUDINARY CONFIG ────────────────────────────────────────────────────────
 // Replace "your_cloud_name" with your actual Cloudinary cloud name
@@ -370,7 +372,7 @@ export default function DSGems() {
   useEffect(() => {
     localStorage.setItem("ds_gems", JSON.stringify(gems));
   }, [gems]);
-  
+
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
   const [selectedGem, setSelectedGem] = useState(null);
