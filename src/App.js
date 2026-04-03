@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db } from "./firebase";
-import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 // ─── CLOUDINARY CONFIG ────────────────────────────────────────────────────────
 // Replace "your_cloud_name" with your actual Cloudinary cloud name
