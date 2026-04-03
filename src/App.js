@@ -383,19 +383,30 @@ export default function DSGems() {
   return (
     <div style={{ minHeight: "100vh", background: "#f5faf7", fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
-
+     
+      <style>{`
+        @media (max-width: 480px) {
+          .nav-links button { font-size: 13px !important; }
+          .nav-links { gap: 12px !important; }
+        }
+      `}</style>
+      
       {/* Navbar */}
-      <nav style={{ background: "#06402b", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 20px rgba(6,64,43,0.3)" }}>
+      <nav style={{ background: "#06402b", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 20px rgba(6,64,43,0.3)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <DiamondIcon />
           <span style={{ color: "#a8f0c8", fontSize: 18, fontWeight: 700, letterSpacing: 2, whiteSpace: "nowrap" }}>DS GEMS</span>
         </div>
-        <div style={{ display: "flex", gap: 28 }}>
-          {["home","about","contact"].map(p => (
-            <button key={p} onClick={() => setPage(p)} style={{ background: "none", border: "none", color: page===p ? "#a8f0c8" : "rgba(168,240,200,0.55)", fontSize: 15, cursor: "pointer", textTransform: "capitalize", fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, letterSpacing: 1, borderBottom: page===p ? "1.5px solid #a8f0c8" : "none", paddingBottom: 2 }}>{p}</button>
-          ))}
+
+        {/* Desktop nav */}
+        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <div className="nav-links" style={{ display: "flex", gap: 20 }}>
+            {["home","about","contact"].map(p => (
+              <button key={p} onClick={() => setPage(p)} style={{ background: "none", border: "none", color: page===p ? "#a8f0c8" : "rgba(168,240,200,0.55)", fontSize: 15, cursor: "pointer", textTransform: "capitalize", fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, letterSpacing: 1, borderBottom: page===p ? "1.5px solid #a8f0c8" : "none", paddingBottom: 2 }}>{p}</button>
+            ))}
+          </div>
+          <button onClick={() => setAdminPrompt(true)} style={{ background: "rgba(168,240,200,0.12)", border: "1px solid rgba(168,240,200,0.3)", borderRadius: 20, padding: "6px 16px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer", letterSpacing: 1, whiteSpace: "nowrap" }}>Admin</button>
         </div>
-        <button onClick={() => setAdminPrompt(true)} style={{ background: "rgba(168,240,200,0.12)", border: "1px solid rgba(168,240,200,0.3)", borderRadius: 20, padding: "6px 18px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer", letterSpacing: 1 }}>Admin</button>
       </nav>
 
       {page === "home" && (
