@@ -585,9 +585,17 @@ export default function DSGems() {
               placeholder="Email"
               style={{ border: `1px solid ${keyError ? "#e04040" : "#cce0d4"}`, borderRadius: 10, padding: "9px 14px", width: "100%", fontSize: 15, outline: "none", boxSizing: "border-box", marginBottom: 10 }}
             />
-            {keyError && <div style={{ color: "#e04040", fontSize: 13, marginBottom: 10 }}>Incorrect password</div>}
+            <input
+              type="password"
+              value={adminKey}
+              onChange={e => { setAdminKey(e.target.value); setKeyError(false); }}
+              placeholder="Password"
+              style={{ border: `1px solid ${keyError ? "#e04040" : "#cce0d4"}`, borderRadius: 10, padding: "9px 14px", width: "100%", fontSize: 15, outline: "none", boxSizing: "border-box", marginBottom: 6 }}
+              onKeyDown={e => e.key === "Enter" && handleAdminAccess()}
+            />
+            {keyError && <div style={{ color: "#e04040", fontSize: 13, marginBottom: 10 }}>Incorrect email or password</div>}
             <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-              <button onClick={() => { setAdminPrompt(false); setAdminKey(""); setKeyError(false); }} style={{ flex: 1, background: "none", border: "1px solid #ccc", borderRadius: 20, padding: 9, cursor: "pointer", fontSize: 14, color: "#555" }}>Cancel</button>
+              <button onClick={() => { setAdminPrompt(false); setAdminEmail(""); setAdminKey(""); setKeyError(false); }} style={{ flex: 1, background: "none", border: "1px solid #ccc", borderRadius: 20, padding: 9, cursor: "pointer", fontSize: 14, color: "#555" }}>Cancel</button>
               <button onClick={handleAdminAccess} style={{ flex: 1, background: "#06402b", border: "none", borderRadius: 20, padding: 9, cursor: "pointer", fontSize: 14, color: "#a8f0c8" }}>Enter</button>
             </div>
             
