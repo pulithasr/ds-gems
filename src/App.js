@@ -168,10 +168,7 @@ function Modal({ gem, onClose }) {
               )}
             </div>
           )}
-          <button onClick={async () => { await signOut(auth); onClose(); }}
-            style={{ background: "none", border: "1px solid rgba(168,240,200,0.4)", borderRadius: 20, padding: "5px 14px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer" }}>
-            Sign out
-          </button>
+          
           <button onClick={onClose} style={{ position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.5)", border: "none", color: "#fff", borderRadius: "50%", width: 32, height: 32, fontSize: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>×</button>
         </div>
 
@@ -244,7 +241,13 @@ function AdminPanel({ gems, onAdd, onUpdate, onRemove, onClose }) {
       <div style={{ background: "#fff", borderRadius: 20, maxWidth: 720, width: "100%", maxHeight: "92vh", overflow: "auto", fontFamily: "sans-serif" }}>
         <div style={{ background: "#06402b", padding: "18px 28px", borderRadius: "20px 20px 0 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ color: "#a8f0c8", fontSize: 18, fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>Admin — Manage Listings</span>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: "#a8f0c8", fontSize: 24, cursor: "pointer" }}>×</button>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button onClick={async () => { await signOut(auth); onClose(); }}
+              style={{ background: "none", border: "1px solid rgba(168,240,200,0.4)", borderRadius: 20, padding: "5px 14px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer" }}>
+              Sign out
+            </button>
+            <button onClick={onClose} style={{ background: "none", border: "none", color: "#a8f0c8", fontSize: 24, cursor: "pointer" }}>×</button>
+          </div>
         </div>
 
         {/* Tabs */}
