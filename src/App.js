@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 // ─── CLOUDINARY CONFIG ────────────────────────────────────────────────────────
@@ -167,6 +168,10 @@ function Modal({ gem, onClose }) {
               )}
             </div>
           )}
+          <button onClick={async () => { await signOut(auth); onClose(); }}
+            style={{ background: "none", border: "1px solid rgba(168,240,200,0.4)", borderRadius: 20, padding: "5px 14px", color: "#a8f0c8", fontFamily: "sans-serif", fontSize: 12, cursor: "pointer" }}>
+            Sign out
+          </button>
           <button onClick={onClose} style={{ position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.5)", border: "none", color: "#fff", borderRadius: "50%", width: 32, height: 32, fontSize: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>×</button>
         </div>
 
@@ -387,6 +392,7 @@ export default function DSGems() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [adminKey, setAdminKey] = useState("");
   const [adminPrompt, setAdminPrompt] = useState(false);
+  const [adminEmail, setAdminEmail] = useState("");
   const [keyError, setKeyError] = useState(false);
   const [page, setPage] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -397,9 +403,17 @@ export default function DSGems() {
     (g.name.toLowerCase().includes(search.toLowerCase()) || g.origin.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const handleAdminAccess = () => {
-    if (adminKey === "dsadmin2025") { setShowAdmin(true); setAdminPrompt(false); setAdminKey(""); setKeyError(false); }
-    else setKeyError(true);
+  const handleAdminAccess = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, adminEmail, adminKey);
+      setShowAdmin(true);
+      setAdminPrompt(false);
+      setAdminEmail("");
+      setAdminKey("");
+      setKeyError(false);
+    } catch (e) {
+      setKeyError(true);
+    }
   };
 
   return (
@@ -564,9 +578,13 @@ export default function DSGems() {
           <div style={{ background: "#fff", borderRadius: 18, padding: "32px 36px", minWidth: 320, textAlign: "center", fontFamily: "sans-serif" }}>
             <div style={{ fontSize: 20, fontWeight: 600, color: "#06402b", fontFamily: "'Cormorant Garamond', Georgia, serif", marginBottom: 10 }}>Admin Access</div>
             <p style={{ fontSize: 14, color: "#777", marginBottom: 18 }}>Enter your admin password to manage listings.</p>
-            <input type="password" value={adminKey} onChange={e => { setAdminKey(e.target.value); setKeyError(false); }} placeholder="Password"
-              style={{ border: `1px solid ${keyError?"#e04040":"#cce0d4"}`, borderRadius: 10, padding: "9px 14px", width: "100%", fontSize: 15, outline: "none", boxSizing: "border-box", marginBottom: 6 }}
-              onKeyDown={e => e.key === "Enter" && handleAdminAccess()} />
+            <input
+              type="email"
+              value={adminEmail}
+              onChange={e => { setAdminEmail(e.target.value); setKeyError(false); }}
+              placeholder="Email"
+              style={{ border: `1px solid ${keyError ? "#e04040" : "#cce0d4"}`, borderRadius: 10, padding: "9px 14px", width: "100%", fontSize: 15, outline: "none", boxSizing: "border-box", marginBottom: 10 }}
+            />
             {keyError && <div style={{ color: "#e04040", fontSize: 13, marginBottom: 10 }}>Incorrect password</div>}
             <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
               <button onClick={() => { setAdminPrompt(false); setAdminKey(""); setKeyError(false); }} style={{ flex: 1, background: "none", border: "1px solid #ccc", borderRadius: 20, padding: 9, cursor: "pointer", fontSize: 14, color: "#555" }}>Cancel</button>
