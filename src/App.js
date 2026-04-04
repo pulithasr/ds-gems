@@ -471,7 +471,7 @@ export default function DSGems() {
         <>
           <div style={{ background: "linear-gradient(135deg, #06402b 60%, #0a5c3e)", padding: "60px 32px 52px", textAlign: "center" }}>
             <div style={{ fontSize: 13, color: "#a8f0c8", letterSpacing: 4, textTransform: "uppercase", marginBottom: 16, fontFamily: "sans-serif" }}>Sri Lanka · Worldwide Gemstone Trading</div>
-            <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", color: "#fff", fontWeight: 700, margin: "0 0 14px", lineHeight: 1.1 }}>Sri Lanka's Finest Gem Artistry —<br />Crafted by Nature, Perfected by Us</h1>
+            <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", color: "#fff", fontWeight: 700, margin: "0 0 14px", lineHeight: 1.1 }}>Sri Lanka's Finest Gem Artistry<br />Crafted by Nature, Perfected by Us</h1>
             <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 17, maxWidth: 520, margin: "0 auto 28px", lineHeight: 1.7, fontFamily: "sans-serif" }}>Curated natural gemstones, certified and sourced ethically for discerning collectors and dealers worldwide.</p>
             <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
               {["Worldwide Shipping","Secure Transactions"].map(t => (
@@ -512,9 +512,9 @@ export default function DSGems() {
       {page === "about" && (
         <div style={{ maxWidth: 780, margin: "60px auto", padding: "0 32px" }}>
           <div style={{ fontSize: 12, color: "#888", letterSpacing: 3, textTransform: "uppercase", fontFamily: "sans-serif", marginBottom: 12 }}>About Us</div>
-          <h2 style={{ fontSize: 40, color: "#06402b", fontWeight: 700, marginBottom: 20 }}>DS Gems — Trusted by Dealers Worldwide</h2>
-          <p style={{ fontSize: 17, color: "#444", lineHeight: 1.8, fontFamily: "sans-serif", marginBottom: 18 }}>DS Gems is a trusted natural gemstone dealer operating across Sri Lanka and Thailand, connecting buyers worldwide with the finest certified gemstones at every stage — from rough to cut and polished.</p>
-          <p style={{ fontSize: 17, color: "#444", lineHeight: 1.8, fontFamily: "sans-serif", marginBottom: 18 }}>We specialise in all varieties of gemstones, with a strong focus on Blue Sapphires sourced directly from the gem-rich mines of Sri Lanka — one of the world's most renowned sapphire origins.</p>
+          <h2 style={{ fontSize: 40, color: "#06402b", fontWeight: 700, marginBottom: 20 }}>DS Gems - Trusted by Dealers Worldwide</h2>
+          <p style={{ fontSize: 17, color: "#444", lineHeight: 1.8, fontFamily: "sans-serif", marginBottom: 18 }}>DS Gems is a trusted natural gemstone dealer operating across Sri Lanka and Thailand, connecting buyers worldwide with the finest certified gemstones at every stage, from rough to cut and polished.</p>
+          <p style={{ fontSize: 17, color: "#444", lineHeight: 1.8, fontFamily: "sans-serif", marginBottom: 18 }}>We specialise in all varieties of gemstones, with a strong focus on Blue Sapphires sourced directly from the gem-rich mines of Sri Lanka, one of the world's most renowned sapphire origins.</p>
           <p style={{ fontSize: 17, color: "#444", lineHeight: 1.8, fontFamily: "sans-serif", marginBottom: 40 }}>Whether you are looking for rough stones, calibrated cuts, or fully polished gems, we offer transparent and reliable trading backed by years of hands-on expertise in the industry.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
             {[["Ethical Sourcing","Direct relationships with miners and reputable gem dealers"],["Certified Quality","Every gem independently verified by top gemological labs"],["Secure Trading","Safe, insured worldwide shipping with full documentation"],["Expert Guidance","Personal service from experienced gemologists"]].map(([t,d]) => (
@@ -531,7 +531,7 @@ export default function DSGems() {
         <div style={{ maxWidth: 600, margin: "60px auto", padding: "0 32px" }}>
           <div style={{ fontSize: 12, color: "#888", letterSpacing: 3, textTransform: "uppercase", fontFamily: "sans-serif", marginBottom: 12 }}>Get in Touch</div>
           <h2 style={{ fontSize: 40, color: "#06402b", fontWeight: 700, marginBottom: 20 }}>Contact DS Gems</h2>
-          <p style={{ fontSize: 16, color: "#555", fontFamily: "sans-serif", lineHeight: 1.7, marginBottom: 32 }}>For enquiries, pricing, certificates, or to arrange a viewing — our team is ready to assist international buyers and dealers.</p>
+          <p style={{ fontSize: 16, color: "#555", fontFamily: "sans-serif", lineHeight: 1.7, marginBottom: 32 }}>For enquiries, pricing, certificates, or to arrange a viewing our team is ready to assist international buyers and dealers.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 36 }}>
             {[["Email","dsgemslk@gmail.com"],["WhatsApp","+94 71 555 7038"],["Instagram","@dsgems.lk"],["Location","Colombo, Sri Lanka"],["Business Hours","Mon – Sat, 9am – 6pm"]].map(([k,v]) => (
               <div key={k} style={{ display: "flex", gap: 18, alignItems: "flex-start", background: "#f0f9f4", borderRadius: 12, padding: "14px 18px", border: "1px solid #d0eadd" }}>
